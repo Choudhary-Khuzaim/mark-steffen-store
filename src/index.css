@@ -1,0 +1,30 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply m-0 min-h-svh overflow-x-hidden bg-cream-bg font-body text-pure-black antialiased;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    @apply font-condensed font-normal uppercase leading-none tracking-tight;
+  }
+
+  button {
+    @apply font-condensed uppercase tracking-wide;
+  }
+
+  #root {
+    @apply min-h-svh;
+  }
+}
