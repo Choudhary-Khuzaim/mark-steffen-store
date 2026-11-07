@@ -17,6 +17,9 @@ const SLIDES = [
     secondaryCta: 'Explore the Books',
     showStars: false,
     layout: 'dual',
+    background:
+      'linear-gradient(180deg, #121026 0%, #19103b 28%, #3b1e4a 55%, #702e4a 78%, #e67e5f 100%)',
+    glow: 'rgba(230,126,95,0.9)',
   },
   {
     id: 2,
@@ -29,6 +32,9 @@ const SLIDES = [
     secondaryCta: 'Read Chapter 1 Free',
     showStars: false,
     layout: 'framed',
+    background:
+      'linear-gradient(180deg, #0a0e24 0%, #121849 32%, #1a2a6c 58%, #2e3f8f 82%, #5b6fd4 100%)',
+    glow: 'rgba(91,111,212,0.75)',
   },
   {
     id: 3,
@@ -42,6 +48,9 @@ const SLIDES = [
     showStars: false,
     layout: 'single',
     cover: 'guidebook',
+    background:
+      'linear-gradient(180deg, #1a120c 0%, #3a2418 30%, #6b3d22 55%, #a85c2e 78%, #e8a05a 100%)',
+    glow: 'rgba(232,160,90,0.85)',
   },
   {
     id: 4,
@@ -54,6 +63,9 @@ const SLIDES = [
     secondaryCta: 'See the Details',
     showStars: false,
     layout: 'jacket',
+    background:
+      'linear-gradient(180deg, #0c0c0c 0%, #1a1218 28%, #3d1528 55%, #7a1f3d 78%, #c44b3c 100%)',
+    glow: 'rgba(196,75,60,0.85)',
   },
 ]
 
@@ -329,17 +341,13 @@ function HeroSlider() {
       aria-label="Featured collections"
     >
       <div
-        className="absolute inset-0 -z-10"
-        style={{
-          background:
-            'linear-gradient(180deg, #121026 0%, #19103b 28%, #3b1e4a 55%, #702e4a 78%, #e67e5f 100%)',
-        }}
+        className="absolute inset-0 -z-10 transition-[background] duration-700 ease-out"
+        style={{ background: slide.background }}
       />
       <div
-        className="pointer-events-none absolute inset-x-0 bottom-0 -z-10 h-[55%]"
+        className="pointer-events-none absolute inset-x-0 bottom-0 -z-10 h-[55%] transition-[background] duration-700 ease-out"
         style={{
-          background:
-            'radial-gradient(ellipse 100% 70% at 50% 100%, rgba(230,126,95,0.9), transparent 58%)',
+          background: `radial-gradient(ellipse 100% 70% at 50% 100%, ${slide.glow}, transparent 58%)`,
         }}
       />
 
