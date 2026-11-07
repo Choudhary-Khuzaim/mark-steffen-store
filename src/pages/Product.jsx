@@ -12,6 +12,7 @@ import {
   ShoppingBag,
 } from 'lucide-react'
 import CompleteSet from '../components/product/CompleteSet'
+import { useCart } from '../context/CartContext'
 import { getProduct } from '../data/products'
 
 const FEATURES = [
@@ -43,6 +44,7 @@ const SIGNED_FEE = 15
 function Product() {
   const { id } = useParams()
   const product = getProduct(id)
+  const { addItem } = useCart()
 
   const [activeThumb, setActiveThumb] = useState(0)
   const [formatId, setFormatId] = useState(product.formats[0].id)
@@ -70,6 +72,23 @@ function Product() {
   )
 
   const lineTotal = unitPrice * quantity
+
+  const handleAddToCart = () => {
+    const metaParts = [format.label]
+    if (signed) metaParts.push('Signed')
+    if (signed && inscription.trim()) metaParts.push(`For ${inscription.trim()}`)
+
+    addItem({
+      productId: product.id,
+      formatId: format.id,
+      signed,
+      title: product.title,
+      price: unitPrice,
+      quantity,
+      image: product.thumbs[0]?.src,
+      meta: metaParts.join(' · '),
+    })
+  }
 
   const accordions = [
     {
@@ -273,9 +292,10 @@ function Product() {
 
               <button
                 type="button"
+                onClick={handleAddToCart}
                 className="flex-1 bg-brand-orange py-4 font-display text-lg tracking-[0.14em] text-white transition hover:bg-pure-black"
               >
-                Add to Cart
+                Add to Cart — ${lineTotal.toFixed(2)}
               </button>
             </div>
 

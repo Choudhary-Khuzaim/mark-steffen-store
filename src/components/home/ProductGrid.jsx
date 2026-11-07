@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import { Heart } from 'lucide-react'
+import { useCart } from '../../context/CartContext'
 import { IMAGES } from '../../data/images'
 
 const FILTERS = ['All', 'Books', 'Audio', 'Sets']
@@ -11,48 +12,52 @@ const PRODUCTS = [
     id: 1,
     title: 'The Constitution of God',
     subtext: 'Hardcover · 2026 Author Edition',
-    price: 0,
+    price: 50,
     rating: 'n',
     category: 'Books',
     badge: 'New',
     frame: 'bg-gradient-to-b from-[#1a1140] to-[#0b031b]',
     cover: 'constitution',
+    image: IMAGES.constitutionHero1,
     to: '/product/1',
   },
   {
     id: 2,
     title: 'The Constitution of God, Signed',
     subtext: 'Hardcover · Inscribed by the author',
-    price: 0,
+    price: 65,
     rating: 'n',
     category: 'Books',
     badge: 'Signed',
     frame: 'bg-gradient-to-br from-[#c04824] to-[#6e2c30]',
     cover: 'constitution',
+    image: IMAGES.constitutionHero1,
     to: '/product/1',
   },
   {
     id: 3,
     title: 'A Guidebook for Living and Dying',
     subtext: 'Paperback',
-    price: 0,
+    price: 24,
     rating: 'n',
     category: 'Books',
     badge: 'Companion',
     frame: 'bg-gradient-to-b from-[#e4d8c0] to-[#d3c8b2]',
     cover: 'guidebook',
+    image: IMAGES.guidebookHero1,
     to: '/product/2',
   },
   {
     id: 4,
     title: 'The Complete Signed Set',
     subtext: 'Both volumes · Signed & inscribed',
-    price: 0,
+    price: 71,
     rating: 'n',
     category: 'Sets',
     badge: 'Save [%]',
     frame: 'bg-gradient-to-b from-[#1a1140] to-[#0b031b]',
     cover: 'set',
+    image: IMAGES.bothMockup,
     to: '/',
   },
 ]
@@ -100,6 +105,7 @@ function ProductCover({ type }) {
 
 function ProductGrid() {
   const [activeFilter, setActiveFilter] = useState('All')
+  const { addItem } = useCart()
 
   const visibleProducts =
     activeFilter === 'All'
@@ -189,6 +195,16 @@ function ProductGrid() {
 
                 <button
                   type="button"
+                  onClick={() =>
+                    addItem({
+                      id: `grid-${product.id}`,
+                      productId: String(product.id),
+                      title: product.title,
+                      price: product.price,
+                      image: product.image,
+                      meta: product.subtext,
+                    })
+                  }
                   className="mt-5 w-full rounded-full bg-black py-3.5 font-sans text-sm font-bold uppercase tracking-[0.12em] text-white transition hover:bg-brand-orange"
                 >
                   Add to Cart

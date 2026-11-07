@@ -1,6 +1,7 @@
 import { useMemo, useState } from 'react'
 import { motion } from 'framer-motion'
 import { Check } from 'lucide-react'
+import { useCart } from '../../context/CartContext'
 
 const BOOKS = [
   {
@@ -29,6 +30,7 @@ function money(value) {
 }
 
 function BundleBuilder() {
+  const { addItem } = useCart()
   const [selectedBooks, setSelectedBooks] = useState([
     'constitution',
     'guidebook',
@@ -266,6 +268,29 @@ function BundleBuilder() {
             <button
               type="button"
               disabled={lineItems.length === 0}
+              onClick={() => {
+                if (lineItems.length === 0) return
+                const bookLabels = BOOKS.filter((book) =>
+                  selectedBooks.includes(book.id),
+                )
+                  .map((book) => book.label)
+                  .join(' + ')
+                addItem({
+                  id: `bundle-${selectedBooks.slice().sort().join('-')}-${formatId}-${signed ? 'signed' : 'plain'}`,
+                  productId: 'bundle-set',
+                  title: bookLabels || 'Your Set',
+                  price: total,
+                  meta: [
+                    format.label,
+                    signed ? 'Signed & Inscribed' : null,
+                    signed && inscription.trim()
+                      ? `For ${inscription.trim()}`
+                      : null,
+                  ]
+                    .filter(Boolean)
+                    .join(' · '),
+                })
+              }}
               className="mt-8 w-full rounded-full bg-brand-orange py-[1.05rem] font-sans text-sm font-bold uppercase tracking-[0.16em] text-[#1a1a1a] transition hover:brightness-110 disabled:cursor-not-allowed disabled:opacity-40"
             >
               Add Set to Cart

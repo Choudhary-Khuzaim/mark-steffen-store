@@ -1,5 +1,6 @@
 import { motion } from 'framer-motion'
 import { Plus } from 'lucide-react'
+import { useCart } from '../../context/CartContext'
 import { IMAGES } from '../../data/images'
 
 const BUNDLE_PRICE = 80
@@ -24,6 +25,8 @@ function BookTile({ src, caption }) {
 }
 
 function CompleteSet() {
+  const { addItem } = useCart()
+
   return (
     <section className="border-t border-pure-black/10 bg-cream-bg py-16 sm:py-20">
       <div className="mx-auto grid max-w-7xl items-center gap-10 px-4 sm:px-6 lg:grid-cols-2 lg:gap-14 lg:px-8">
@@ -71,6 +74,16 @@ function CompleteSet() {
           </p>
           <button
             type="button"
+            onClick={() =>
+              addItem({
+                id: 'complete-the-set',
+                productId: 'complete-the-set',
+                title: 'Complete the Set',
+                price: BUNDLE_PRICE,
+                image: IMAGES.bothMockup,
+                meta: `Both books · Save $${SAVE_AMOUNT}`,
+              })
+            }
             className="mt-8 w-full rounded-none bg-brand-orange py-4 font-condensed text-xl uppercase tracking-wide text-white transition hover:bg-white hover:text-pure-black"
           >
             Add Both to Cart

@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import { Heart } from 'lucide-react'
+import { useCart } from '../../context/CartContext'
 import { IMAGES } from '../../data/images'
 
 const FEATURES = [
@@ -26,6 +27,8 @@ function CollectorCover() {
 }
 
 function SignedCollector() {
+  const { addItem } = useCart()
+
   return (
     <section className="bg-[#180c3c]">
       {/* Part 1 — full-bleed: books on top, white price below */}
@@ -87,6 +90,16 @@ function SignedCollector() {
 
             <button
               type="button"
+              onClick={() =>
+                addItem({
+                  id: 'complete-signed-set',
+                  productId: 'complete-signed-set',
+                  title: 'The Complete Signed Set',
+                  price: 71,
+                  image: IMAGES.bothMockup,
+                  meta: 'Both volumes · Signed & inscribed',
+                })
+              }
               className="mt-8 w-full max-w-md rounded-full bg-black py-4 font-sans text-sm font-bold uppercase tracking-[0.14em] text-white transition hover:bg-brand-orange sm:mt-10"
             >
               Add to Cart

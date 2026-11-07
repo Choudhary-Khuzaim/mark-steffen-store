@@ -178,41 +178,45 @@ function Header({ cartCount = 2, onCartOpen }) {
       </div>
 
       {/* Row 2: Navigation + Shop mega menu */}
-      <div
-        className="relative hidden lg:block"
-        onMouseEnter={openShop}
-        onMouseLeave={closeShop}
-      >
+      <div className="relative hidden lg:block">
         <nav
           aria-label="Primary"
           className={`mx-auto flex max-w-7xl items-center justify-center gap-8 px-8 ${
             shopOpen ? 'pb-3' : 'pb-4'
           }`}
         >
-          <button
-            type="button"
-            aria-expanded={shopOpen}
-            aria-haspopup="true"
-            className={`inline-flex items-center gap-1.5 font-sans text-xs font-semibold uppercase tracking-[0.2em] transition-colors ${
-              shopOpen
-                ? 'text-brand-orange'
-                : 'text-gray-900 hover:text-brand-orange'
-            }`}
-            onFocus={openShop}
+          <div
+            className="relative"
+            onMouseEnter={openShop}
+            onMouseLeave={closeShop}
           >
-            Shop All
-            <ChevronDown
-              className={`h-3.5 w-3.5 transition-transform duration-200 ${
-                shopOpen ? 'rotate-180' : ''
+            <button
+              type="button"
+              aria-expanded={shopOpen}
+              aria-haspopup="true"
+              className={`inline-flex items-center gap-1.5 font-sans text-xs font-semibold uppercase tracking-[0.2em] transition-colors ${
+                shopOpen
+                  ? 'text-brand-orange'
+                  : 'text-gray-900 hover:text-brand-orange'
               }`}
-              strokeWidth={2}
-            />
-          </button>
+              onFocus={openShop}
+              onBlur={closeShop}
+            >
+              Shop All
+              <ChevronDown
+                className={`h-3.5 w-3.5 transition-transform duration-200 ${
+                  shopOpen ? 'rotate-180' : ''
+                }`}
+                strokeWidth={2}
+              />
+            </button>
+          </div>
 
           {NAV_LINKS.map((link) => (
             <Link
               key={link.label}
               to={link.to}
+              onMouseEnter={closeShop}
               className="font-sans text-xs font-semibold uppercase tracking-[0.2em] text-gray-900 transition-colors hover:text-brand-orange"
             >
               {link.label}
@@ -228,6 +232,8 @@ function Header({ cartCount = 2, onCartOpen }) {
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               transition={{ duration: 0.15, ease: 'easeOut' }}
+              onMouseEnter={openShop}
+              onMouseLeave={closeShop}
             >
               <div className="relative mx-auto max-w-7xl overflow-hidden px-8">
                 <img

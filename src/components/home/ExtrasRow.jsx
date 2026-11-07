@@ -1,5 +1,6 @@
 import { motion } from 'framer-motion'
 import { ArrowRight, BookOpen, Bookmark, Coffee, Shirt } from 'lucide-react'
+import { useCart } from '../../context/CartContext'
 import { IMAGES } from '../../data/images'
 
 const GIFTS = [
@@ -7,7 +8,7 @@ const GIFTS = [
     id: 1,
     title: 'Reflection Journal',
     subtext: 'Guided prompts from the book',
-    price: 0,
+    price: 28,
     icon: BookOpen,
     panel: 'bg-[#180c3c]',
     iconClass: 'text-[#fc783c]',
@@ -16,7 +17,7 @@ const GIFTS = [
     id: 2,
     title: 'Statement Tee',
     subtext: 'Sizes S to 3XL',
-    price: 0,
+    price: 32,
     icon: Shirt,
     panel: 'bg-[#c04824]',
     iconClass: 'text-white',
@@ -25,7 +26,7 @@ const GIFTS = [
     id: 3,
     title: 'Ceramic Mug',
     subtext: '11 oz',
-    price: 0,
+    price: 22,
     icon: Coffee,
     panel: 'bg-[#0c0c0c]',
     iconClass: 'text-[#fc783c]',
@@ -34,7 +35,7 @@ const GIFTS = [
     id: 4,
     title: 'Bookmark Set',
     subtext: 'Pack of 4',
-    price: 0,
+    price: 12,
     icon: Bookmark,
     panel: 'bg-[#fcfcfc]',
     iconClass: 'text-[#1a1a1a]',
@@ -72,6 +73,8 @@ const DISPATCHES = [
 ]
 
 function ExtrasRow() {
+  const { addItem } = useCart()
+
   return (
     <section className="bg-cream-bg">
       {/* Journals, Gifts & Apparel — beige band from mockup */}
@@ -135,6 +138,15 @@ function ExtrasRow() {
                     </p>
                     <button
                       type="button"
+                      onClick={() =>
+                        addItem({
+                          id: `gift-${item.id}`,
+                          productId: `gift-${item.id}`,
+                          title: item.title,
+                          price: item.price,
+                          meta: item.subtext,
+                        })
+                      }
                       className="mt-5 w-full rounded-full bg-black py-3.5 font-sans text-sm font-bold uppercase tracking-[0.14em] text-white transition hover:bg-brand-orange"
                     >
                       Add to Cart
