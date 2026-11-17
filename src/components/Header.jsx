@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, NavLink } from 'react-router-dom'
 import { AnimatePresence, motion } from 'framer-motion'
 import {
   ChevronDown,
@@ -15,50 +15,55 @@ import { IMAGES } from '../data/images'
 const MEGA_COLUMNS = [
   {
     title: 'Books',
-    shopAll: { label: 'Shop All Books', to: '/product/1' },
+    shopAll: { label: 'Shop All Books', to: '/shop/books' },
     items: [
       { label: 'The Constitution of God', to: '/product/1', count: 2 },
       { label: 'A Guidebook for Living & Dying', to: '/product/2', count: 1 },
-      { label: 'Audiobooks', to: '/product/1', count: 1 },
-      { label: 'Complete Signed Set', to: '/', count: 1 },
+      { label: 'Audiobooks', to: '/shop/audiobooks', count: 1 },
+      { label: 'Complete Signed Set', to: '/shop/signed', count: 1 },
     ],
   },
   {
     title: 'Signed & Collector',
-    shopAll: { label: 'Shop All Signed', to: '/product/1' },
+    shopAll: { label: 'Shop All Signed', to: '/shop/signed' },
     items: [
-      { label: 'Signed Editions', to: '/product/1', count: 2 },
-      { label: 'Limited Run Jackets', to: '/', count: 1 },
-      { label: "Collector's Edition", to: '/product/1', count: 1 },
-      { label: 'Inscribed Copies', to: '/product/1', count: 1 },
+      { label: 'Signed Editions', to: '/shop/signed', count: 2 },
+      { label: 'Limited Run Jackets', to: '/shop/signed', count: 1 },
+      { label: "Collector's Edition", to: '/shop/signed', count: 1 },
+      { label: 'Inscribed Copies', to: '/shop/signed', count: 1 },
     ],
   },
   {
     title: 'Gifts & Bundles',
-    shopAll: { label: 'Shop All Gifts', to: '/' },
+    shopAll: { label: 'Shop All Gifts', to: '/shop/apparel' },
     items: [
-      { label: 'Journals & Study', to: '/', count: 1 },
-      { label: 'Apparel & Gifts', to: '/', count: 3 },
-      { label: 'Bundles', to: '/', count: 1 },
-      { label: 'Build Your Set', to: '/', count: 1 },
+      { label: 'Journals & Study', to: '/shop/journals', count: 1 },
+      { label: 'Apparel & Gifts', to: '/shop/apparel', count: 3 },
+      { label: 'Bundles', to: '/shop/bundles', count: 1 },
+      { label: 'Build Your Set', to: '/shop/bundles', count: 1 },
     ],
   },
 ]
 
 const NAV_LINKS = [
-  { label: 'Books', to: '/product/1' },
-  { label: 'Signed & Collector', to: '/product/1' },
-  { label: 'Audiobooks', to: '/product/1' },
-  { label: 'Journals & Study', to: '/' },
-  { label: 'Apparel & Gifts', to: '/' },
-  { label: 'Bundles', to: '/' },
-  { label: 'About Mark', to: '/' },
+  { label: 'Books', to: '/shop/books' },
+  { label: 'Signed & Collector', to: '/shop/signed' },
+  { label: 'Audiobooks', to: '/shop/audiobooks' },
+  { label: 'Journals & Study', to: '/shop/journals' },
+  { label: 'Apparel & Gifts', to: '/shop/apparel' },
+  { label: 'Bundles', to: '/shop/bundles' },
+  { label: 'About Mark', to: '/about' },
 ]
 
 const MOBILE_LINKS = [
-  { label: 'Shop All', to: '/' },
+  { label: 'Shop All', to: '/shop/books' },
   ...NAV_LINKS,
 ]
+
+const navLinkClass = ({ isActive }) =>
+  `font-sans text-xs font-semibold uppercase tracking-[0.2em] transition-colors ${
+    isActive ? 'text-brand-orange' : 'text-gray-900 hover:text-brand-orange'
+  }`
 
 function Header({ cartCount = 2, onCartOpen }) {
   const [mobileOpen, setMobileOpen] = useState(false)
@@ -213,14 +218,14 @@ function Header({ cartCount = 2, onCartOpen }) {
           </div>
 
           {NAV_LINKS.map((link) => (
-            <Link
+            <NavLink
               key={link.label}
               to={link.to}
               onMouseEnter={closeShop}
-              className="font-sans text-xs font-semibold uppercase tracking-[0.2em] text-gray-900 transition-colors hover:text-brand-orange"
+              className={navLinkClass}
             >
               {link.label}
-            </Link>
+            </NavLink>
           ))}
         </nav>
 
@@ -295,13 +300,19 @@ function Header({ cartCount = 2, onCartOpen }) {
             <ul className="flex flex-col px-4 pb-4 sm:px-6">
               {MOBILE_LINKS.map((link) => (
                 <li key={link.label}>
-                  <Link
+                  <NavLink
                     to={link.to}
                     onClick={() => setMobileOpen(false)}
-                    className="block py-3 font-sans text-xs font-semibold uppercase tracking-[0.2em] text-gray-900 transition-colors hover:text-brand-orange"
+                    className={({ isActive }) =>
+                      `block py-3 font-sans text-xs font-semibold uppercase tracking-[0.2em] transition-colors ${
+                        isActive
+                          ? 'text-brand-orange'
+                          : 'text-gray-900 hover:text-brand-orange'
+                      }`
+                    }
                   >
                     {link.label}
-                  </Link>
+                  </NavLink>
                 </li>
               ))}
             </ul>

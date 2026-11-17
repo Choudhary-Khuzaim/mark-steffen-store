@@ -5,19 +5,19 @@ const LINK_COLUMNS = [
   {
     title: 'Shop',
     links: [
-      { label: 'Books', to: '/product/1' },
-      { label: 'Signed Editions', to: '/product/1' },
-      { label: 'Bundles', to: '/' },
-      { label: 'Merch', to: '/' },
+      { label: 'Books', to: '/shop/books' },
+      { label: 'Signed Editions', to: '/shop/signed' },
+      { label: 'Bundles', to: '/shop/bundles' },
+      { label: 'Merch', to: '/shop/apparel' },
     ],
   },
   {
     title: 'Read',
     links: [
-      { label: 'Chapter 1 Free', to: '/' },
-      { label: 'The Journal', to: '/' },
-      { label: 'Study Notes', to: '/' },
-      { label: 'Reader Quiz', to: '/' },
+      { label: 'About Mark', to: '/about' },
+      { label: 'The Journal', to: '/shop/journals' },
+      { label: 'Study Notes', to: '/shop/journals' },
+      { label: 'Audiobooks', to: '/shop/audiobooks' },
     ],
   },
   {
@@ -25,7 +25,7 @@ const LINK_COLUMNS = [
     links: [
       { label: 'Shipping', to: '/' },
       { label: 'Returns', to: '/' },
-      { label: 'Contact', to: '/' },
+      { label: 'Contact', to: '/about' },
       { label: 'FAQ', to: '/' },
     ],
   },

@@ -58,7 +58,7 @@ const PRODUCTS = [
     frame: 'bg-gradient-to-b from-[#1a1140] to-[#0b031b]',
     cover: 'set',
     image: IMAGES.bothMockup,
-    to: '/',
+    to: '/shop/signed',
   },
 ]
 
