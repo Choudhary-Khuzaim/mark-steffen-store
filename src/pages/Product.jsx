@@ -66,22 +66,31 @@ function Product() {
   const format =
     product.formats.find((item) => item.id === formatId) ?? product.formats[0]
 
+  const allowSigned = product.allowSigned !== false
+  const showCompleteSet = product.showCompleteSet !== false
+  const categoryLabel = product.categoryLabel ?? 'Books'
+  const categoryTo = product.categoryTo ?? '/shop/books'
+  const aboutTitle = product.aboutTitle ?? 'About the Book'
+  const formatLabel = product.formatLabel ?? 'Format'
+
   const unitPrice = useMemo(
-    () => format.price + (signed ? SIGNED_FEE : 0),
-    [format.price, signed],
+    () => format.price + (allowSigned && signed ? SIGNED_FEE : 0),
+    [format.price, signed, allowSigned],
   )
 
   const lineTotal = unitPrice * quantity
 
   const handleAddToCart = () => {
     const metaParts = [format.label]
-    if (signed) metaParts.push('Signed')
-    if (signed && inscription.trim()) metaParts.push(`For ${inscription.trim()}`)
+    if (allowSigned && signed) metaParts.push('Signed')
+    if (allowSigned && signed && inscription.trim()) {
+      metaParts.push(`For ${inscription.trim()}`)
+    }
 
     addItem({
       productId: product.id,
       formatId: format.id,
-      signed,
+      signed: allowSigned && signed,
       title: product.title,
       price: unitPrice,
       quantity,
@@ -93,13 +102,13 @@ function Product() {
   const accordions = [
     {
       id: 'toc',
-      title: 'Table of contents',
+      title: product.allowSigned === false ? "What's inside" : 'Table of contents',
       body: product.toc,
     },
     {
       id: 'shipping',
       title: 'Shipping & returns',
-      body: 'Orders ship from the U.S. within 2–4 business days. Unopened books may be returned within 30 days. Signed and inscribed copies are final sale.',
+      body: 'Orders ship from the U.S. within 2–4 business days. Unopened items may be returned within 30 days. Signed and inscribed copies are final sale.',
     },
     {
       id: 'bulk',
@@ -167,8 +176,8 @@ function Product() {
                 Home
               </Link>
               <span className="mx-1.5">/</span>
-              <Link to="/" className="transition hover:text-brand-orange">
-                Books
+              <Link to={categoryTo} className="transition hover:text-brand-orange">
+                {categoryLabel}
               </Link>
               <span className="mx-1.5">/</span>
               <span className="text-pure-black/70">{product.title}</span>
@@ -204,7 +213,7 @@ function Product() {
 
             <div className="mt-8">
               <p className="mb-3 font-display text-sm tracking-[0.14em] text-pure-black/55">
-                Format
+                {formatLabel}
               </p>
               <div className="grid grid-cols-2 gap-2.5 sm:gap-3">
                 {product.formats.map((item) => {
@@ -233,39 +242,41 @@ function Product() {
               </div>
             </div>
 
-            <div className="mt-8 space-y-3">
-              <button
-                type="button"
-                onClick={() => setSigned((value) => !value)}
-                className="flex w-full items-center gap-3 border border-pure-black/15 bg-white px-4 py-3.5 text-left transition hover:border-pure-black/40"
-              >
-                <span
-                  className={`flex h-5 w-5 shrink-0 items-center justify-center border ${
-                    signed
-                      ? 'border-pure-black bg-pure-black text-white'
-                      : 'border-pure-black/40 text-transparent'
-                  }`}
+            {allowSigned && (
+              <div className="mt-8 space-y-3">
+                <button
+                  type="button"
+                  onClick={() => setSigned((value) => !value)}
+                  className="flex w-full items-center gap-3 border border-pure-black/15 bg-white px-4 py-3.5 text-left transition hover:border-pure-black/40"
                 >
-                  <Check className="h-3 w-3" strokeWidth={3} />
-                </span>
-                <span className="font-display text-base tracking-[0.06em] text-pure-black sm:text-lg">
-                  Signed by Mark{' '}
-                  <span className="text-brand-orange">
-                    + ${SIGNED_FEE.toFixed(2)}
+                  <span
+                    className={`flex h-5 w-5 shrink-0 items-center justify-center border ${
+                      signed
+                        ? 'border-pure-black bg-pure-black text-white'
+                        : 'border-pure-black/40 text-transparent'
+                    }`}
+                  >
+                    <Check className="h-3 w-3" strokeWidth={3} />
                   </span>
-                </span>
-              </button>
+                  <span className="font-display text-base tracking-[0.06em] text-pure-black sm:text-lg">
+                    Signed by Mark{' '}
+                    <span className="text-brand-orange">
+                      + ${SIGNED_FEE.toFixed(2)}
+                    </span>
+                  </span>
+                </button>
 
-              <input
-                type="text"
-                value={inscription}
-                onChange={(event) => setInscription(event.target.value)}
-                placeholder="Inscribe to (name, optional)"
-                maxLength={50}
-                disabled={!signed}
-                className="w-full border border-pure-black/15 bg-white px-4 py-3.5 text-sm text-pure-black outline-none transition placeholder:text-pure-black/35 focus:border-pure-black disabled:cursor-not-allowed disabled:bg-[#eae6d9] disabled:text-pure-black/35"
-              />
-            </div>
+                <input
+                  type="text"
+                  value={inscription}
+                  onChange={(event) => setInscription(event.target.value)}
+                  placeholder="Inscribe to (name, optional)"
+                  maxLength={50}
+                  disabled={!signed}
+                  className="w-full border border-pure-black/15 bg-white px-4 py-3.5 text-sm text-pure-black outline-none transition placeholder:text-pure-black/35 focus:border-pure-black disabled:cursor-not-allowed disabled:bg-[#eae6d9] disabled:text-pure-black/35"
+                />
+              </div>
+            )}
 
             <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:items-stretch">
               <div className="inline-flex items-center self-start border border-pure-black/20 bg-white sm:self-stretch">
@@ -323,7 +334,7 @@ function Product() {
 
             <div className="mt-10 border-t border-pure-black/10 pt-8">
               <h2 className="font-display text-2xl tracking-[0.08em] text-pure-black sm:text-3xl">
-                About the Book
+                {aboutTitle}
               </h2>
               <div className="mt-4 space-y-4 text-sm leading-relaxed text-pure-black/70 sm:text-base">
                 {product.about.map((paragraph) => (
@@ -335,7 +346,7 @@ function Product() {
         </div>
       </section>
 
-      <CompleteSet />
+      {showCompleteSet && <CompleteSet />}
 
       <section className="border-t border-pure-black/10 bg-cream-bg py-12 sm:py-16">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
